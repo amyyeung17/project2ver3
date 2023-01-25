@@ -37,6 +37,7 @@ const Curate = ({seed, editEmotion}) => {
         navigate('/error', getError({...err}))
       }
     }
+    console.log(prevSeed)
     if (typeof(prevSeed) !== 'undefined') {
       getUpdateSeed()
     }
