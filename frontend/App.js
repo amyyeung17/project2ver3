@@ -26,6 +26,7 @@ const App = () => {
   const { pathname, state } = useLocation()
   const [emotion, setEmotion] = useState({valence: 0, intensity: 0, retrievedSeed: false, status: 'status', avgValence: 0, avgIntensity: 0})
   const [seed, setSeed] = useState([])
+  const [refresh, setRefresh] = useState(true)
 
  
   //Retrieves access token from Spotify API
@@ -34,8 +35,9 @@ const App = () => {
     const fetchToken = async() => {
       try {
         const { data } = await axios.post('/project2/.netlify/functions/server/spotify/token')
-        if (data.message === 'Token already made') {
+        if (data.message === 'Token already made' && refresh) {
           const { data } = await axios.get('/project2/.netlify/functions/server/prev/refresh')
+          setRefresh(false)
           if (data.type !== 'empty') {
             setSeed(data.prevSeed)
             if (data.type === 'emotion') {
@@ -47,14 +49,15 @@ const App = () => {
             const { uri, songState } = data
             //redirect({pathname: '/details', search: createSearchParams({uri})}, {state: songState})
           }
-
         }
       } catch (err) {
         navigate('/error', getError({...err}))
       }
     }
   
-    fetchToken()
+    if (((pathname === '/welcome' || pathname === '/') && (state == null || state === 2)) || refresh) {
+      fetchToken()
+    }
   }, [state])
 
   /**
@@ -132,7 +135,7 @@ const App = () => {
           <Routes location={location} key={location.pathname}>
             <Route exact path="/" element={<Navigate replace to="/welcome" />} /> 
             <Route path="welcome" element={<Welcome /> } />
-            <Route path="curate" element={ <Curate seed={seed} editEmotion={editEmotion} />} >
+            <Route path="curate" element={ <Curate refresh={refresh} seed={seed} editEmotion={editEmotion} />} >
               <Route path="search" element={<Search />} />
               <Route path="selected" element={<Selected seed={seed} editSeed={editSeed}/>} />
               <Route path="past" element={<Past />}/>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate, Outlet } from 'react-router-dom'
 import Filter from '../curate/Filter'
@@ -13,11 +13,10 @@ import { LeftDiv, RightDiv, RowDiv, NavDiv } from '../Shared'
  * @param {Array<Object>} props.seed - selected tracks to be used as seed for search
  * @param {function({type})} props.editEmotion - callback function to edit emotion state
  */
-const Curate = ({seed, editEmotion}) => {
+const Curate = ({refresh, seed, editEmotion}) => {
   const navigate = useNavigate()
   const [filter, setFilter] = useState({track: false, artist: false, album: false, genre: false})
   const [genres, setGenres] = useState([])
-  const firstRender = useRef(true)
 
   /**
    * If component is remounted from navigtion or seed state is updated, check to see if the seed is equivalent to the one stored in cookie-session.
@@ -37,14 +36,11 @@ const Curate = ({seed, editEmotion}) => {
         navigate('/error', getError({...err}))
       }
     }
-    if (!firstRender.current) {
+    if (!refresh) {
       getUpdateSeed()
     }
   }, [seed])
 
-  useEffect(() => {
-    firstRender.current = false
-  }, [])
 
   /**
    * Callback function that edits which genres (if genre filter is selected) is being applied to search
