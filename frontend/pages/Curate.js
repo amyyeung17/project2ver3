@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import { useNavigate, Outlet } from 'react-router-dom'
 import Filter from '../curate/Filter'
@@ -6,7 +6,7 @@ import NavOptions from '../elements/NavOptions'
 import NavSubOptions from '../elements/NavSubOptions'
 import { getError } from '../functions/getError'
 import { LeftDiv, RightDiv, RowDiv, NavDiv } from '../Shared'
-import usePrevious from '../hooks/usePrevious'
+
 /**
  * Page to search and add searched songs as seeds.
  * @param {Object} props - s
@@ -17,7 +17,7 @@ const Curate = ({seed, editEmotion}) => {
   const navigate = useNavigate()
   const [filter, setFilter] = useState({track: false, artist: false, album: false, genre: false})
   const [genres, setGenres] = useState([])
-  const prevSeed = usePrevious({value: seed})
+  const firstRender = useRef(true)
 
   /**
    * If component is remounted from navigtion or seed state is updated, check to see if the seed is equivalent to the one stored in cookie-session.
@@ -37,17 +37,14 @@ const Curate = ({seed, editEmotion}) => {
         navigate('/error', getError({...err}))
       }
     }
-    console.log(prevSeed)
-    if (typeof(prevSeed) !== 'undefined') {
+    if (!firstRender.current) {
       getUpdateSeed()
     }
   }, [seed])
 
-  /**
-   * Callback function that edits which filter is currently being applied to search results
-   * @param {string} op - type of filter 
-   */
-  const editFilter = (op) => setFilter(f => ({...f, [op]: !f[op]}));
+  useEffect(() => {
+    firstRender.current = false
+  }, [])
 
   /**
    * Callback function that edits which genres (if genre filter is selected) is being applied to search
@@ -85,7 +82,7 @@ const Curate = ({seed, editEmotion}) => {
             swap={window.location.pathname.split('/')[3]}
           />
           {window.location.pathname.split('/')[3] === 'search' &&
-            <Filter filter={filter} genres={genres} editGenres={editGenres} editFilter={editFilter} resetOptions={resetOptions} />
+            <Filter filter={filter} genres={genres} editGenres={editGenres} editFilter={(op) => setFilter(f => ({...f, [op]: !f[op]}))} resetOptions={resetOptions} />
           } 
         </LeftDiv>
         <RightDiv> 
