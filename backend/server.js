@@ -1,6 +1,5 @@
 const express = require('express')
 const serverless = require('serverless-http')
-const helmet = require('helmet')
 const path = require('path')
 const Keygrip = require('keygrip')
 const cookieSession = require('cookie-session')
@@ -21,7 +20,7 @@ app.use(cookieSession({
   maxAge: 1000 * 60 * 60,
   secure: true
 }))
-app.use(helmet())
+
 app.get('/', (req, res) => res.send('HELLO'))
 
 app.use('/.netlify/functions/server/prev', prevRouter)

@@ -18,7 +18,6 @@ Get songs recommendations based on your current mood & inputted songs using the 
   - Ensures token is only fetched once per session in a browser (session expires when token does in 1 hour)
   - Preserves past user inputs & data when a page is refreshed or exited 
 - Cookies are signed with Keygrip module 
-- Headers are secured with Helmet module
 - Hosted on Netlify, deployed as a serverless app using serverless-http module & Netlify functions (built with Netlify-lambda)
 - Development mode with Nodemon and concurrently 
 
