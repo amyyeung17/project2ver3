@@ -1,5 +1,6 @@
 const express = require('express')
 const serverless = require('serverless-http')
+const helmet = require('helmet')
 const path = require('path')
 const Keygrip = require('keygrip')
 const cookieSession = require('cookie-session')
@@ -10,16 +11,17 @@ const prevRouter = require('./routes/prev')
 const searchRouter = require('./routes/search')
 const spotifyRouter = require('./routes/spotify')
 
-
+//1/27 - Added secure to cookieSession & helmet 
 app.use(express.static('dist'))
 app.use(express.json())
 app.use(cookieParser())
 app.use(cookieSession({
   name: 'spotifySession',
   keys: Keygrip(['SPOTIFYKEY!'], 'sha256', 'hex'),
-  maxAge: 1000 * 60 * 60
+  maxAge: 1000 * 60 * 60,
+  secure: true
 }))
-
+app.use(helmet())
 app.get('/', (req, res) => res.send('HELLO'))
 
 app.use('/.netlify/functions/server/prev', prevRouter)
