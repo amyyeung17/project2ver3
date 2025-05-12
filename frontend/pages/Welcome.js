@@ -13,7 +13,8 @@ const Welcome = () => {
           Get track recommendations easily
           by choosing one or more song(s) that fit your current mood 
           and additional questions.
-          {"\n"}
+        </WelcomeSubtitle>
+        <WelcomeSubtitle>
           Due to changes in Spotify API changes effective 11/27/2024, this app can no longer use the endpoints needed to return
           recommendations. Changes are to be determined. 
         </WelcomeSubtitle>
