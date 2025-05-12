@@ -1,4 +1,4 @@
-export default getCurrent = ({items, page}) => {
+const getCurrent = ({items, page}) => {
   let pageNum = (page % 4) * 5
   let lastNum = pageNum + 5
   const currentResults = []
@@ -12,3 +12,4 @@ export default getCurrent = ({items, page}) => {
   return {currentResults, pageNum, lastNum}
 }
 
+export default getCurrent

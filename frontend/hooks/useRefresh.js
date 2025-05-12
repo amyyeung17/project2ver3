@@ -3,7 +3,7 @@ import { redirect, createSearchParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { getError } from '../functions/getError'
 
-export default useRefresh = ({setEmotion, setSeed, pathname, refresh}) => {
+const useRefresh = ({setEmotion, setSeed, pathname, refresh}) => {
   const navigate = useNavigate()
   useEffect(() => {
     const getRefresh = async () => {
@@ -30,3 +30,5 @@ export default useRefresh = ({setEmotion, setSeed, pathname, refresh}) => {
   }, [])
 
 }
+
+export default useRefresh
