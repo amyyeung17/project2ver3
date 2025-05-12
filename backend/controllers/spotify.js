@@ -60,7 +60,7 @@ const postExtra = async (req, res, next) => {
     const albumTracks = await axios.get(getAlbumUrl({id: trackInfo.data.album.id, trackNumber: trackInfo.data.track_number, type: 'start'}), access)
     const artistInfo = await axios.get(getInfoUrls({type: 'artist', artists: trackInfo.data.artists}), access)
     const editedArtists = [...artistInfo.data.artists]
-
+    //CHECK! 4-3-2023 -> no return but set index? 
     const getArtistTracks = async({artist, index}) => {
       const artistTracks = await axios.get(getInfoUrls({type: 'artistTracks', artistId: artist.id}) , access)
       editedArtists[index] = {...editedArtists[index], tracks: artistTracks.data.tracks}

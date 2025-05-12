@@ -16,7 +16,7 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(cookieSession({
   name: 'spotifySession',
-  keys: Keygrip(['SPOTIFYKEY!'], 'sha256', 'hex'),
+  keys: Keygrip([process.env.SPOTIFY_API_KEY_1, process.env.SPOTIFY_API_KEY_2, process.env.SPOTIFY_API_KEY_3], 'sha256', 'hex'),
   maxAge: 1000 * 60 * 60,
   secure: true
 }))
